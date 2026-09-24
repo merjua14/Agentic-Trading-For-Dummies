@@ -4,7 +4,7 @@
 
 **The runner is paper-only.** `python runner.py --live` is refused. That refusal is a tutorial guard, not a promise that a model can never be pointed at a live account by some other program you write yourself.
 
-**Perpetual futures are leveraged.** On a live account they can go to zero, and they can do it quickly. Liquidation is a real outcome. The stops and halts in the rulebook reduce how casually a paper agent adds risk. They do not remove risk, and they do not apply to money this repo never touches.
+**Perpetual futures (perps) are leveraged.** On a live account they can go to zero, and they can do it quickly. Liquidation (the exchange closes the position) is a real outcome. The stops and halts in the rulebook reduce how casually a paper agent adds risk. They do not remove risk, and they do not apply to money this repo never touches.
 
 **There are no performance numbers in this tutorial.** No win rate, no expected return, no "typical week," no example account size. If a sentence sounds like a forecast, it does not belong here.
 

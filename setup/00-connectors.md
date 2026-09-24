@@ -1,6 +1,19 @@
 # Connectors
 
-One connector is required. It is the Liquid one, and you use it in **paper** mode.
+A connector is the link between this tutorial and an app.
+
+You need one. It is Liquid, the exchange app, and you use it in **paper** mode. Paper means simulated, not real money.
+
+## Where the URL and token go
+
+Liquid shows you a connector URL and a token. Paste them into `runner/.env`:
+
+```
+LIQUID_MCP_URL=paste-the-url
+LIQUID_MCP_TOKEN=paste-the-token
+```
+
+That file stays on your computer. The runner reads it. It does not turn live trading on.
 
 | Connector | What it is for | Required |
 |---|---|---|

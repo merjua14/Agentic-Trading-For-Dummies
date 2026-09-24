@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agentic Trading for Dummies</title>
-<meta name="description" content="Paper-first Liquid V7.7 LITE tutorial. Risk 1.5%. Soft and hard halts on. The runner refuses live mode.">
+<meta name="description" content="Paper-first Liquid tutorial. Risk 1.5%. Soft and hard halts on. The runner refuses live mode.">
 <meta property="og:title" content="Agentic Trading for Dummies">
 <meta property="og:description" content="Paper-first Liquid tutorial. 1.5% risk. Both halts on. The runner refuses --live.">
 <meta property="og:image" content="https://raw.githubusercontent.com/merjua14/Agentic-Trading-For-Dummies/main/assets/og.png">
@@ -23,12 +23,15 @@
   main { max-width: 880px; margin: 0 auto; padding: 40px 20px 72px; }
   .eyebrow { color: var(--accent); letter-spacing: .16em; font-size: 12px; text-transform: uppercase; }
   h1 { font-size: 40px; line-height: 1.1; margin: 8px 0 12px; }
-  p { color: var(--muted); }
+  h2 { font-size: 22px; margin: 28px 0 8px; }
+  p, li { color: var(--muted); }
   a { color: var(--accent); }
+  code { color: var(--ink); }
   .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
   .card b { display: block; font-size: 13px; color: var(--muted); font-weight: 600; }
   .card span { font-size: 22px; color: var(--good); }
+  .card span.fit { font-size: 18px; line-height: 1.3; }
   .card em { font-style: normal; color: var(--bad); font-size: 22px; }
   img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #0E131B; }
   pre {
@@ -43,6 +46,10 @@
   fieldset { border: 1px solid var(--line); border-radius: 10px; margin: 12px 0 0; }
   label { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; color: var(--muted); }
   input[disabled] { accent-color: var(--accent); }
+  ol.steps { padding-left: 1.2rem; }
+  ol.steps li { margin: 6px 0; }
+  .breaks { display: grid; gap: 12px; margin: 12px 0 0; }
+  .breaks h3 { margin: 0 0 4px; font-size: 16px; }
   @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 32px; } }
 </style>
 </head>
@@ -50,19 +57,21 @@
 <main>
   <div class="eyebrow">Paper-first configurator</div>
   <h1>Agentic Trading for Dummies</h1>
-  <p>Liquid V7.7 LITE, locked to beginner defaults. This page does not generate a live config. The runner refuses <code>--live</code>.</p>
+  <p>Paper means simulated, not real money. These dials are locked. This page does not turn live trading on. The runner refuses <code>--live</code>.</p>
 
   <div class="grid">
-    <div class="card"><b>Paper</b><span>ON</span></div>
-    <div class="card"><b>riskFrac</b><span>1.5%</span></div>
-    <div class="card"><b>Soft halt</b><span>ON</span></div>
-    <div class="card"><b>Hard halt</b><span>ON</span></div>
+    <div class="card"><b>Paper (simulated)</b><span>ON</span></div>
+    <div class="card"><b>riskFrac (0.015)</b><span>1.5%</span></div>
+    <div class="card"><b>Soft halt (brake)</b><span>ON</span></div>
+    <div class="card"><b>Hard halt (brake)</b><span>ON</span></div>
+    <div class="card"><b>Leverage ceiling</b><span>2</span></div>
+    <div class="card"><b>Live mode</b><em>REFUSED</em></div>
   </div>
 
   <fieldset>
     <legend style="padding:0 8px;color:#9EABC0">Locked levers</legend>
     <div style="padding:8px 16px 16px">
-      <label>Risk per trade <input type="range" min="1.5" max="1.5" value="1.5" disabled></label>
+      <label>Risk per trade, 1.5% <input type="range" min="1.5" max="1.5" value="1.5" disabled></label>
       <label>Paper mode <input type="checkbox" checked disabled></label>
       <label>Soft halt <input type="checkbox" checked disabled></label>
       <label>Hard halt <input type="checkbox" checked disabled></label>
@@ -70,35 +79,88 @@
     </div>
   </fieldset>
 
-  <p>Live stays off. There is no preset that turns it on.</p>
-  <img src="decision-flow.svg" alt="Decision flow: paper, halts, a real stop, then a 1.5 percent paper order. Live is refused.">
+  <p>Live stays off. There is no preset that turns it on. Soft halt and hard halt both stay on.</p>
+  <img src="decision-flow.svg" alt="Decision flow: paper on, both halts on, a real stop, size at 1.5 percent, paper order only. Live is refused.">
 
-  <h2>Copy the setup</h2>
-  <pre id="cmd">git clone https://github.com/merjua14/Agentic-Trading-For-Dummies
+  <h2>Start here</h2>
+  <ol class="steps">
+    <li>Clone the repo and open the <code>runner</code> folder.</li>
+    <li>Create a venv (a private folder of Python tools) and turn it on.</li>
+    <li>Install the libraries. Copy <code>.env.example</code> to <code>.env</code>.</li>
+    <li>In <code>.env</code>, paste your model key, the Liquid URL, and the Liquid token. Leave every other line alone. Liquid is the exchange app. Paper must be on.</li>
+    <li>Run <code>--check</code>. You want <code>mode=paper</code>, <code>riskFrac=0.015</code>, <code>softHalt=on</code>, <code>hardHalt=on</code>.</li>
+    <li>Run <code>--live</code>. Success is the word <code>REFUSED</code>. Then the program stops. Nothing is sent.</li>
+    <li>Run <code>python runner.py</code> once. You want a line with <code>PAPER ONLY</code>, then a <code>PAPER REPORT</code>.</li>
+  </ol>
+
+  <h2>Mac or Linux</h2>
+  <pre id="cmd-unix">git clone https://github.com/merjua14/Agentic-Trading-For-Dummies
 cd Agentic-Trading-For-Dummies/runner
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
 python runner.py --check
-python runner.py --live</pre>
+python runner.py --live
+python runner.py</pre>
+
+  <h2>Windows PowerShell</h2>
+  <p>Only the venv lines change. Use these instead of <code>python3</code> and <code>source</code>. If Windows blocks the script, run <code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code> once, then activate again.</p>
+  <pre id="cmd-win">git clone https://github.com/merjua14/Agentic-Trading-For-Dummies
+cd Agentic-Trading-For-Dummies/runner
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env
+python runner.py --check
+python runner.py --live
+python runner.py</pre>
+
   <div class="row">
-    <button id="copy" type="button">Copy commands</button>
+    <button id="copy-unix" type="button">Copy Mac/Linux</button>
+    <button id="copy-win" type="button">Copy Windows</button>
     <a class="btn" href="https://github.com/merjua14/Agentic-Trading-For-Dummies">Open the repo</a>
   </div>
   <p id="status" role="status"></p>
-  <p>Full tutorial, disclaimer, and rulebook live in the repo. Nothing on this page promises a return.</p>
+
+  <h2>What success looks like</h2>
+  <div class="grid">
+    <div class="card"><b>python runner.py --check</b><span class="fit">paper, 1.5%, both halts on</span></div>
+    <div class="card"><b>python runner.py --live</b><em>REFUSED</em></div>
+    <div class="card"><b>python runner.py</b><span class="fit">PAPER ONLY, then a report</span></div>
+  </div>
+
+  <h2>If something breaks</h2>
+  <div class="breaks">
+    <div class="card">
+      <h3>Missing key</h3>
+      <p>You see <code>Missing key:</code> and a name like <code>ANTHROPIC_API_KEY</code>, <code>LIQUID_MCP_URL</code>, or <code>LIQUID_MCP_TOKEN</code>. Open <code>.env</code> in the <code>runner</code> folder. Paste a value after each name. No quotes. No spaces around <code>=</code>. Save. Run <code>python runner.py</code> again.</p>
+    </div>
+    <div class="card">
+      <h3>Paper off</h3>
+      <p>The report says paper is off. In Liquid, run <code>enable_paper_trading</code>, then <code>paper_trading_status</code>. You want paper on. Run <code>python runner.py</code> again. Leave paper on. Live mode stays refused.</p>
+    </div>
+    <div class="card">
+      <h3>Wrong directory</h3>
+      <p>You see <code>can't open file 'runner.py'</code>, <code>No such file</code>, or <code>wrong directory</code>. Run <code>cd Agentic-Trading-For-Dummies/runner</code>, then <code>python runner.py --check</code>. You should see <code>mode=paper</code>.</p>
+    </div>
+  </div>
+
+  <p>The same steps, the disclaimer, and the rulebook are in the repo. Nothing on this page promises a return.</p>
 </main>
 <script>
-document.getElementById("copy").addEventListener("click", async () => {
-  const text = document.getElementById("cmd").textContent;
+async function copyFrom(id, label) {
+  const text = document.getElementById(id).textContent;
+  const status = document.getElementById("status");
   try {
     await navigator.clipboard.writeText(text);
-    document.getElementById("status").textContent = "Copied.";
+    status.textContent = label + " copied.";
   } catch (err) {
-    document.getElementById("status").textContent = "Select the commands and copy them yourself.";
+    status.textContent = "Select the commands and copy them yourself.";
   }
-});
+}
+document.getElementById("copy-unix").addEventListener("click", () => copyFrom("cmd-unix", "Mac/Linux"));
+document.getElementById("copy-win").addEventListener("click", () => copyFrom("cmd-win", "Windows"));
 </script>
 </body>
 </html>

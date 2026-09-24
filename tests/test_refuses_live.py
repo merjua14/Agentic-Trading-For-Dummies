@@ -1,5 +1,6 @@
 """The public runner refuses live mode and keeps paper defaults."""
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -49,3 +50,46 @@ def test_check_prints_paper_defaults():
     assert "hardHalt=on" in text
     assert "liveFlag=refused" in text
     assert "rulebook=ok" in text
+
+
+def test_blank_env_names_the_missing_key():
+    env = os.environ.copy()
+    for key in (
+        "ANTHROPIC_API_KEY",
+        "OPENAI_API_KEY",
+        "XAI_API_KEY",
+        "LIQUID_MCP_URL",
+        "LIQUID_MCP_TOKEN",
+        "MODE",
+        "LIVE",
+        "TRADING_MODE",
+    ):
+        env[key] = ""
+    env["PROVIDER"] = "anthropic"
+    result = subprocess.run(
+        [sys.executable, str(RUNNER)],
+        cwd=ROOT / "runner",
+        text=True,
+        capture_output=True,
+        check=False,
+        env=env,
+    )
+    assert result.returncode == 1, result.stderr
+    assert "Missing key:" in result.stderr
+    assert "ANTHROPIC_API_KEY" in result.stderr
+    assert "LIQUID_MCP_URL" in result.stderr
+    assert "LIQUID_MCP_TOKEN" in result.stderr
+    assert "REFUSED" not in result.stderr
+
+
+def test_check_outside_runner_folder_says_wrong_directory():
+    result = subprocess.run(
+        [sys.executable, str(RUNNER), "--check"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert "wrong directory" in result.stderr
+    assert "mode=paper" not in result.stdout
