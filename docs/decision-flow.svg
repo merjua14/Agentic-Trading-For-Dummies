@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Agentic Trading for Dummies decision flow</title>
+  <desc id="desc">Paper must be on, both halts must be on, a real stop must exist, size uses 1.5 percent risk, and the order stays on paper. Live mode is refused.</desc>
+  <rect width="960" height="640" fill="#0E131B"/>
+  <text x="48" y="52" fill="#E2A751" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="13" letter-spacing="2.4">LIQUID V7.7 LITE</text>
+  <text x="48" y="86" fill="#E8EDF5" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700">Decision flow</text>
+  <text x="48" y="114" fill="#9EABC0" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="15">Paper first. Both brakes on. No live switch.</text>
+
+  <g font-family="Inter, ui-sans-serif, system-ui, sans-serif">
+    <rect x="48" y="156" width="250" height="72" rx="8" fill="#19212D" stroke="#5DBE93" stroke-width="2"/>
+    <text x="173" y="186" text-anchor="middle" fill="#9EABC0" font-size="12">1</text>
+    <text x="173" y="208" text-anchor="middle" fill="#E8EDF5" font-size="16" font-weight="600">Paper on?</text>
+
+    <rect x="354" y="156" width="250" height="72" rx="8" fill="#19212D" stroke="#5DBE93" stroke-width="2"/>
+    <text x="479" y="186" text-anchor="middle" fill="#9EABC0" font-size="12">2</text>
+    <text x="479" y="208" text-anchor="middle" fill="#E8EDF5" font-size="16" font-weight="600">Soft + hard halts on?</text>
+
+    <rect x="660" y="156" width="250" height="72" rx="8" fill="#19212D" stroke="#5DBE93" stroke-width="2"/>
+    <text x="785" y="186" text-anchor="middle" fill="#9EABC0" font-size="12">3</text>
+    <text x="785" y="208" text-anchor="middle" fill="#E8EDF5" font-size="16" font-weight="600">Real stop level?</text>
+
+    <path d="M298 192 H354" stroke="#35424F" stroke-width="2" fill="none"/>
+    <path d="M604 192 H660" stroke="#35424F" stroke-width="2" fill="none"/>
+    <polygon points="354,192 346,187 346,197" fill="#E2A751"/>
+    <polygon points="660,192 652,187 652,197" fill="#E2A751"/>
+
+    <rect x="48" y="292" width="250" height="64" rx="8" fill="#2E1A17" stroke="#E27C6B"/>
+    <text x="173" y="329" text-anchor="middle" fill="#E27C6B" font-size="15" font-weight="600">Stop. Turn paper on.</text>
+    <path d="M173 228 V292" stroke="#E27C6B" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+    <rect x="354" y="292" width="250" height="64" rx="8" fill="#2E1A17" stroke="#E27C6B"/>
+    <text x="479" y="329" text-anchor="middle" fill="#E27C6B" font-size="15" font-weight="600">Stop. Halts stay on.</text>
+    <path d="M479 228 V292" stroke="#E27C6B" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+    <rect x="660" y="292" width="250" height="64" rx="8" fill="#2A2314" stroke="#E0B155"/>
+    <text x="785" y="329" text-anchor="middle" fill="#E0B155" font-size="15" font-weight="600">Pass. No level, no trade.</text>
+    <path d="M785 228 V292" stroke="#E0B155" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+    <rect x="250" y="420" width="460" height="88" rx="8" fill="#152A22" stroke="#5DBE93" stroke-width="2"/>
+    <text x="480" y="454" text-anchor="middle" fill="#5DBE93" font-size="13" letter-spacing="1.4">YES TO ALL THREE</text>
+    <text x="480" y="482" text-anchor="middle" fill="#E8EDF5" font-size="18" font-weight="600">Size at 1.5% risk. Paper order. Confirm the stop.</text>
+    <path d="M785 228 V384 H480 V420" stroke="#5DBE93" stroke-width="2" fill="none"/>
+
+    <rect x="250" y="536" width="460" height="64" rx="8" fill="#2E1A17" stroke="#E27C6B" stroke-width="2"/>
+    <text x="480" y="574" text-anchor="middle" fill="#E8EDF5" font-size="16" font-weight="600">--live is refused. Nothing is sent.</text>
+  </g>
+</svg>
