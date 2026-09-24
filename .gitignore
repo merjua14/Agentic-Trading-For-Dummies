@@ -1,0 +1,8 @@
+.env
+*.log
+ledger.csv
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+snapshots/
