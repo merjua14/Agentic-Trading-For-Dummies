@@ -73,6 +73,13 @@ REFUSE_LIVE = (
     "Remove the flag. Nothing was sent to a model or an exchange."
 )
 
+WRONG_DIRECTORY = (
+    "wrong directory: runner.py must be started from the runner folder.\n"
+    "cd into Agentic-Trading-For-Dummies/runner\n"
+    "On Windows PowerShell: cd Agentic-Trading-For-Dummies\\runner\n"
+    "Then run: python runner.py --check"
+)
+
 
 def log(msg):
     print(f"[{datetime.now(timezone.utc):%Y-%m-%d %H:%M:%SZ}] {msg}", flush=True)
@@ -94,6 +101,48 @@ def refuse_live():
     raise SystemExit(2)
 
 
+def provider_key_name():
+    if PROVIDER == "openai":
+        return "OPENAI_API_KEY"
+    if PROVIDER == "xai":
+        return "XAI_API_KEY"
+    return "ANTHROPIC_API_KEY"
+
+
+def missing_settings():
+    """Names that must be filled in .env before a paper run. --check does not use this."""
+    missing = []
+    key_name = provider_key_name()
+    if not os.getenv(key_name, "").strip():
+        missing.append(key_name)
+    if not LIQUID_MCP_URL.strip():
+        missing.append("LIQUID_MCP_URL")
+    if not LIQUID_MCP_TOKEN.strip():
+        missing.append("LIQUID_MCP_TOKEN")
+    return missing
+
+
+def require_settings():
+    missing = missing_settings()
+    if not missing:
+        return
+    print(
+        "Missing key: " + ", ".join(missing) + ".\n"
+        "Open .env in the runner folder. Paste a value after each name above.\n"
+        "No quotes. No spaces around the = sign. Save.\n"
+        "Run python runner.py again from Agentic-Trading-For-Dummies/runner.",
+        file=sys.stderr,
+    )
+    raise SystemExit(1)
+
+
+def require_rulebook():
+    if RULEBOOK.exists():
+        return
+    print(f"{WRONG_DIRECTORY}\nrulebook missing: {RULEBOOK}", file=sys.stderr)
+    raise SystemExit(1)
+
+
 def rulebook_markers_ok(text):
     needed = (
         "riskFrac: 0.015",
@@ -108,9 +157,7 @@ def rulebook_markers_ok(text):
 
 def run_check():
     """Print locked defaults. Does not call a model or an exchange."""
-    if not RULEBOOK.exists():
-        print(f"rulebook missing: {RULEBOOK}", file=sys.stderr)
-        raise SystemExit(1)
+    require_rulebook()
     missing = rulebook_markers_ok(RULEBOOK.read_text())
     print(f"mode={'paper' if PAPER_ONLY else 'INVALID'}")
     print(f"riskFrac={RISK_FRAC:.3f}")
@@ -278,10 +325,8 @@ def main(argv=None):
         print("REFUSED: beginner defaults were edited off. Restore paper and both halts.", file=sys.stderr)
         raise SystemExit(2)
 
-    if not LIQUID_MCP_URL:
-        raise SystemExit("LIQUID_MCP_URL is not set. Copy .env.example to .env and fill it in.")
-    if not RULEBOOK.exists():
-        raise SystemExit(f"Rulebook not found at {RULEBOOK}")
+    require_settings()
+    require_rulebook()
 
     rulebook = RULEBOOK.read_text()
     missing = rulebook_markers_ok(rulebook)

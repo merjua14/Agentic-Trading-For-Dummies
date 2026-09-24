@@ -1,6 +1,6 @@
 # Which app can run this
 
-You need three abilities: reach the Liquid connector, run on a schedule, and do that without a tap from you at each step. A shell is useful and not required.
+You need three abilities: reach the Liquid connector, run on a schedule, and do that without a tap from you at each step. A terminal is useful and not required.
 
 | App | Custom connector | Schedule | Unattended | Practical answer |
 |---|---|---|---|---|
